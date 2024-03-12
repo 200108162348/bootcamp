@@ -1,0 +1,47 @@
+class Solution {
+    public int myAtoi(String s) {
+        int index = 0, len = s.length(), flag = Integer.MAX_VALUE / 10;
+        boolean isNegative = false, isOutOfRange = false, hasSign = false, hasDigit = false;
+        
+        while (index < len) {
+            char ch = s.charAt(index);
+            if ((hasSign == true) && (ch < '0' || ch > '9'))
+                break;
+            if ((ch < '0' || ch > '9') && (ch != '+' && ch != '-' && ch != ' '))
+                break;
+            else if (ch >= '0' && ch <= '9') {
+                hasDigit = true;
+                if ((si > flag) || (si == flag && ch > '7')) {
+                    isOutOfRange = true;
+                    break;
+                }
+                si = si * 10 + (ch - '0');
+            }
+            else {
+                if (ch == '-') {
+                    if (hasDigit || hasSign) {
+                        return hasDigit ? si * (isNegative ? -1 : 1) : 0;
+                    }
+                    hasSign = true;
+                    isNegative = true;
+                }
+                else if (ch == '+') {
+                    if (hasDigit || hasSign) {
+                        return hasDigit ? si * (isNegative ? -1 : 1) : 0;
+                    }
+                    hasSign = true;
+                }
+                else if (ch == ' ' && hasDigit) {
+                    break;
+                }
+            }
+            index++;
+        }
+        
+        if (isOutOfRange) {
+            return isNegative ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+        }
+        
+        return si * (isNegative ? -1 : 1);
+    }
+}
